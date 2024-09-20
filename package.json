@@ -1,0 +1,17 @@
+{
+  "name": "kotak",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.14.1",
+    "googleapis": "^144.0.0",
+    "puppeteer": "^23.4.0",
+    "ts-command-line-args": "^2.5.1"
+  }
+}
