@@ -30,7 +30,7 @@ git clone https://github.com/neo773/kotak-bank-auto-transfer.git
 bun install
 ```
 
-3. Set up the Gmail API
+3. Set up the Gmail API (only if using email OTP method)
 
    Create credentials in Google Cloud Console:
 
@@ -62,7 +62,7 @@ paste the `refresh token` in the `.env` file.
 ## Usage
 
 ```bash
-bun ./src/index.ts -r <beneficiary_nickname> -a <amount>
+bun ./src/index.ts -r <beneficiary_nickname> -a <amount> -o <clipboard|email>
 ```
 
 <img width="981" alt="image" src="https://github.com/user-attachments/assets/d09dec07-52b3-4d66-94e9-4bc268c58e3f">

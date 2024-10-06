@@ -1,9 +1,13 @@
 import puppeteer from "puppeteer";
 import { clickElementWithText } from "./utils";
-import { fetchLatestOTPEmail } from "./email";
 import { parse } from "ts-command-line-args";
+import { getOTP } from "./otp";
 
-const args = parse<{ amount: number; receiver: string }>({
+const args = parse<{
+  amount: number;
+  receiver: string;
+  otpMethod: 'clipboard' | 'email';
+}>({
   receiver: {
     type: String,
     alias: "r",
@@ -14,9 +18,15 @@ const args = parse<{ amount: number; receiver: string }>({
     alias: "a",
     description: "amount to transfer in rupees",
   },
+  otpMethod: {
+    type: String as () => 'clipboard' | 'email',
+    alias: "o",
+    description: "OTP method: 'clipboard' or 'email'",
+    defaultValue: 'clipboard' as 'clipboard' | 'email'
+  }
 });
 
-const { amount: AMOUNT, receiver: RECEIVER } = args;
+const { amount: AMOUNT, receiver: RECEIVER, otpMethod: OTP_METHOD } = args;
 const { KOTAK_CRN, KOTAK_PASSWORD } = process.env;
 
 const browser = await puppeteer.launch();
@@ -45,11 +55,11 @@ await page.evaluate(() => {
   }
 });
 
-const latestOTPEmail = await fetchLatestOTPEmail();
-const otp = latestOTPEmail?.snippet?.match(/\b\d{6}\b/);
+const otp = await getOTP(OTP_METHOD);
+console.log("🔐 OTP obtained");
 
 await page.waitForSelector("#otpMobile");
-await page.type("#otpMobile", otp?.[0]!);
+await page.type("#otpMobile", otp);
 
 console.log("🔐 OTP entered");
 

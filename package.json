@@ -9,6 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "clipboardy": "^4.0.0",
     "google-auth-library": "^9.14.1",
     "googleapis": "^144.0.0",
     "puppeteer": "^23.4.0",
