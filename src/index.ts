@@ -6,7 +6,7 @@ import { getOTP } from "./otp";
 const args = parse<{
   amount: number;
   receiver: string;
-  otpMethod: 'clipboard' | 'email';
+  otpMethod: "clipboard" | "email";
 }>({
   receiver: {
     type: String,
@@ -19,11 +19,11 @@ const args = parse<{
     description: "amount to transfer in rupees",
   },
   otpMethod: {
-    type: String as () => 'clipboard' | 'email',
+    type: String as () => "clipboard" | "email",
     alias: "o",
     description: "OTP method: 'clipboard' or 'email'",
-    defaultValue: 'clipboard' as 'clipboard' | 'email'
-  }
+    defaultValue: "clipboard" as "clipboard" | "email",
+  },
 });
 
 const { amount: AMOUNT, receiver: RECEIVER, otpMethod: OTP_METHOD } = args;
