@@ -13,9 +13,12 @@ const clickButton = async (page: Page, selector: string) => {
 const clickElementWithText = async (
   page: Page,
   selector: string,
-  text: string,
+  text: string
 ) => {
   await page.waitForSelector(selector);
+
+  await page.waitForNetworkIdle({ idleTime: 500, timeout: 30000 });
+
   await page.evaluate(
     (sel, txt) => {
       const elements = document.querySelectorAll(sel);
@@ -24,14 +27,17 @@ const clickElementWithText = async (
           el instanceof HTMLElement &&
           el.textContent?.toLowerCase().includes(txt.toLowerCase())
         ) {
+          console.log("clicked", el.textContent);
           el.click();
           break;
         }
       }
     },
     selector,
-    text,
+    text
   );
+
+  await page.waitForNetworkIdle({ idleTime: 500, timeout: 30000 });
 };
 
 export { clickButton, clickElementWithText };
