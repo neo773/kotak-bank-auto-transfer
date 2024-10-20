@@ -27,7 +27,6 @@ const clickElementWithText = async (
           el instanceof HTMLElement &&
           el.textContent?.toLowerCase().includes(txt.toLowerCase())
         ) {
-          console.log("clicked", el.textContent);
           el.click();
           break;
         }
