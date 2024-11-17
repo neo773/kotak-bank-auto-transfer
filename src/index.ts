@@ -6,6 +6,7 @@ import { getOTP } from "./otp";
 const args = parse<{
   amount: number;
   receiver: string;
+  phoneNumber: string;
   otpMethod: "clipboard" | "email";
 }>({
   receiver: {
@@ -18,6 +19,11 @@ const args = parse<{
     alias: "a",
     description: "amount to transfer in rupees",
   },
+  phoneNumber: {
+    type: String,
+    alias: "p",
+    description: "phone number to send the OTP to",
+  },
   otpMethod: {
     type: String as () => "clipboard" | "email",
     alias: "o",
@@ -26,7 +32,12 @@ const args = parse<{
   },
 });
 
-const { amount: AMOUNT, receiver: RECEIVER, otpMethod: OTP_METHOD } = args;
+const {
+  amount: AMOUNT,
+  receiver: RECEIVER,
+  otpMethod: OTP_METHOD,
+  phoneNumber: PHONE_NUMBER,
+} = args;
 const { KOTAK_CRN, KOTAK_PASSWORD } = process.env;
 
 const browser = await puppeteer.launch();
@@ -90,6 +101,20 @@ await clickElementWithText(page, "button", "proceed");
 await page.waitForNavigation();
 
 await clickElementWithText(page, "button", "confirm");
+
+await page.waitForSelector("div.opt");
+
+await page.evaluate(() => {
+  const shareButton = document.querySelector("div.opt") as HTMLElement;
+  if (shareButton) {
+    shareButton.click();
+  }
+});
+
+await page.waitForSelector("#shareSMS");
+await page.type("#shareSMS", PHONE_NUMBER);
+
+await clickElementWithText(page, "button", "Send");
 
 console.log(`💸 Confirmed transfer of ₹${AMOUNT} to ${RECEIVER}`);
 
