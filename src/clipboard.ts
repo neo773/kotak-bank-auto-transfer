@@ -4,7 +4,7 @@ const readClipboard = async (): Promise<string> => {
   let clipboard = await clipboardy.read();
   let retries = 0;
   while (isNaN(Number(clipboard)) && retries < 3) {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     clipboard = await clipboardy.read();
     retries++;
   }
